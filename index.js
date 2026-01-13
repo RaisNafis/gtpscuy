@@ -66,11 +66,15 @@ app.all('/player/growid/login/validate', (req, res) => {
   ).toString('base64');
 
   res.send(
-    `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
-  );
+   `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia", "accountAge": 2}`
+    );
 });
 
-app.all('/player/growid/checkToken', (req, res) => {
+app.all('/player/growid/checktoken', (req, res) => {
+    res.redirect(307, '/player/growid/validate/checktoken');
+})
+
+app.all('/player/growid/validate/checktoken', (req, res) => {
   try {
     const { refreshToken, clientData } = req.body;
 
@@ -98,6 +102,7 @@ app.all('/player/growid/checkToken', (req, res) => {
       token: token,
       url: '',
       accountType: 'growtopia',
+      acountAge: 2
     });
   } catch (error) {
     res.status(500).send({ status: 'error', message: 'Internal Server Error' });
